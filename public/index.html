@@ -18,11 +18,38 @@
         canvas{
             position: absolute;
         }
+        #videoInput{
+            margin-bottom: 50px;
+        }
+        button{
+            margin-bottom: 20px ;
+        }
+        #att{
+            margin-bottom: 20px;
+            display:none;
+        }
+        .table{
+            display:none;
+        }
     </style>
 </head>
 <body>
-    <video id="videoInput" width="720" height="550" muted controls>
+    <button id="btn" disabled>press on</button>
+    <button id="att">track attendance</button>
+    <table class="table">
+        <tr>
+        <th>Name of student</th>
+        <th>Time</th>
+        </tr>
+        <tr>
+            <td class="name">xarthak</td>
+            <td class="time">whatever</td>
+        </tr>
+    </table>
+    <video id="videoInput" width="720" height="550" muted controls autoplay>
 
+    <!-- lets make a table for attendance -->
+    
     <script defer async src="./js/face-api.min.js"></script>
     <script defer async src="./js/script.js"></script>
 </body>

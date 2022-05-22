@@ -1,50 +1,69 @@
 const video = document.getElementById('videoInput')
+var attendance = new Set([]);
+var btn = document.getElementById("btn")
 
 Promise.all([
-    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('/models').catch(err => console.log(err, 'print it')),
     faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
     faceapi.nets.ssdMobilenetv1.loadFromUri('/models') //heavier/accurate version of tiny face detector
-]).then(start)
+]).then(start=>{
+    btn.disabled = false;
+}) /*enable the button here!!!*/
 
-var attendance = new Set([]);
 
-function start() {
-    // document.body.append('Models Loaded')
+
+// function start() {
+//     // document.body.append('Models Loaded')
     
+//     navigator.getUserMedia(
+//         { video:{} },
+//         stream => video.srcObject = stream,
+//         err => console.error(err)
+//     )
+
+//     //video.src = '../videos/speech.mp4'
+//     console.log('video added')
+//     recognizeFaces()
+// }
+
+btn.addEventListener('click', ()=>{
     navigator.getUserMedia(
         { video:{} },
         stream => video.srcObject = stream,
         err => console.error(err)
     )
-    
     //video.src = '../videos/speech.mp4'
     console.log('video added')
+    //disable the button again here!!!
+    btn.disabled = true;
     recognizeFaces()
-}
+    // canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height) it is not working here :(
+        // if(document.getElementById('att').clicked == true){
+        //     console.log("kiliked");
+        //     return;
+        // }//////////////////////////////i left here
+    })   
+        
+    async function recognizeFaces() {
 
-async function recognizeFaces() {
-
-    const labeledDescriptors = await loadLabeledImages()
-    // console.log(labeledDescriptors)
-    const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.7)
-
-
-    video.addEventListener('play', async () => {
-        alert("my name is")
-
+        const labeledDescriptors = await loadLabeledImages()
+        const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.7)
         const canvas = faceapi.createCanvasFromMedia(video)
+        
+        // alert("my name is")
+        // const canvas = faceapi.createCanvasFromMedia(video)
         document.body.append(canvas)
 
         const displaySize = { width: video.width, height: video.height }
         faceapi.matchDimensions(canvas, displaySize)
-
+        
         
 
         setInterval(async () => {
             const detections = await faceapi.detectAllFaces(video).withFaceLandmarks().withFaceDescriptors()
             // console.log(detections, 'by meee')
             const resizedDetections = faceapi.resizeResults(detections, displaySize)
-
+            
             canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
 
             const results = resizedDetections.map((d) => {
@@ -58,19 +77,24 @@ async function recognizeFaces() {
                 const box = resizedDetections[i].detection.box
                 const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
                 drawBox.draw(canvas)
+                // console.log(attendance.size);//////////
+                if(attendance.size.toString() != '0'){
+                    document.getElementById("att").style.display = "initial";
+                    // console.log("it should show");
+                    document.getElementById("btn").style.display = "none";
+                }
             })
-        }, 2000)
+        },2000)
+        // if(document.getElementById("att").clicked == true){
+        //     return;
+        // } and hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    }
 
-
-        
-    })
-}
-
-
-function loadLabeledImages() {
-    const labels = ['sarthak', 'Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
-    // const labels = ['Prashant Kumar'] // for WebCam
-    return Promise.all(
+    
+    function loadLabeledImages() {
+        const labels = ['sarthak', 'Black Widow', 'Captain America', 'Hawkeye' , 'Jim Rhodes', 'Tony Stark', 'Thor', 'Captain Marvel']
+        // const labels = ['Prashant Kumar'] // for WebCam
+        return Promise.all(
         labels.map(async (label)=>{
             const descriptions = []
             for(let i=1; i<=2; i++) {
@@ -82,5 +106,13 @@ function loadLabeledImages() {
             // document.body.append(label+' Faces Loaded | ')
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         })
-    )
-}
+        )
+    }
+    // function showthem(){
+    //     // document.getElementById("videoInput").style.display = "none";
+    //     // btn.style.display = "none";
+    //     // document.getElementsByClassName("table").style.display = "table";
+    // }
+   
+// why faceapi is giving error on refreshing?
+// how to stop webcam when it just detect a single face..
