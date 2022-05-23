@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Face Recognition</title>
     <style>
+
         body {
             margin: 0;
             padding: 0;
@@ -14,36 +15,128 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(253,193,104,1) 0%, rgba(251,128,128,1) 90% );
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+	    0% {
+		    background-position: 0% 50%;
+	    }
+	    50% {
+		    background-position: 100% 50%;
+	    }
+	    100% {
+		    background-position: 0% 50%;
+	    }
         }
         canvas{
             position: absolute;
         }
         #videoInput{
             margin-bottom: 50px;
+            border: 9px outset rgb(84, 53, 25); padding: 1px; 
+            /* width: 710px; */
+             /*height="315" */
         }
         button{
             margin-bottom: 20px ;
         }
-        #att{
-            margin-bottom: 20px;
-            display:none;
-        }
-        .table{
-            display:none;
-        }
+        .button {
+        display: inline-block;
+        background-color: #f4511e;
+        border-radius: 4px;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 18px;
+        padding: 10px;
+        width: 235px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+        border: none;
+    }
+    .button span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+    
+    .button span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+    
+    .button:hover span {
+        padding-right: 25px;
+    }
+    
+    .button:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+    #att{
+        /* margin-bottom: 20px; */
+        display:none;
+    }
+    .ton {
+        display: inline-block;
+        background-color: #f4511e;
+        border-radius: 4px;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 18px;
+        padding: 10px;
+        width: 235px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+        border: none;
+    }
+    .ton span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
+    }
+    
+    .ton span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+    
+    .ton:hover span {
+        padding-right: 25px;
+    }
+    
+    .ton:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+    .hidden
+    {
+        display:none;
+    }
+    
     </style>
 </head>
 <body>
-    <button id="btn" disabled>press on</button>
-    <button id="att">track attendance</button>
-    <table class="table">
-        <tr>
-        <th>Name of student</th>
-        <th>Time</th>
+    <button id="btn" class="button" style="vertical-align:middle" disabled><span>Run Attendance Engine</span></button>
+    <button id="att" class="ton" style="vertical-align:middle"><span>Track class attendance</span></button>
+    <table id="table" class="hidden">
+        <tr id="headrow">
+        <th id="heading">Name of student</th>
         </tr>
-        <tr>
+        <tr class="tblrow">
             <td class="name">xarthak</td>
-            <td class="time">whatever</td>
         </tr>
     </table>
     <video id="videoInput" width="720" height="550" muted controls autoplay>
@@ -54,3 +147,8 @@
     <script defer async src="./js/script.js"></script>
 </body>
 </html>
+<!-- function showthem(){
+    document.getElementById("videoInput").style.display = "none";
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+    console.log('yes it is')   
+}  -->

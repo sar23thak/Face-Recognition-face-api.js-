@@ -2,11 +2,15 @@ const video = document.getElementById('videoInput')
 var attendance = new Set([]);
 var btn = document.getElementById("btn")
 
+// tblheadrow.appendChild(tblheading)
+// tblheadrow.appendChild(tblheadingblank)
+
+
 Promise.all([
     faceapi.nets.faceRecognitionNet.loadFromUri('/models').catch(err => console.log(err, 'print it')),
     faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
     faceapi.nets.ssdMobilenetv1.loadFromUri('/models') //heavier/accurate version of tiny face detector
-]).then(start=>{
+]).then(()=>{
     btn.disabled = false;
 }) /*enable the button here!!!*/
 
@@ -25,7 +29,6 @@ Promise.all([
 //     console.log('video added')
 //     recognizeFaces()
 // }
-
 btn.addEventListener('click', ()=>{
     navigator.getUserMedia(
         { video:{} },
@@ -44,12 +47,11 @@ btn.addEventListener('click', ()=>{
         // }//////////////////////////////i left here
     })   
         
-    async function recognizeFaces() {
+    async function recognizeFaces(){
 
         const labeledDescriptors = await loadLabeledImages()
         const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.7)
         const canvas = faceapi.createCanvasFromMedia(video)
-        
         // alert("my name is")
         // const canvas = faceapi.createCanvasFromMedia(video)
         document.body.append(canvas)
@@ -57,9 +59,9 @@ btn.addEventListener('click', ()=>{
         const displaySize = { width: video.width, height: video.height }
         faceapi.matchDimensions(canvas, displaySize)
         
-        
+       
 
-        setInterval(async () => {
+        timeintervall = setInterval(async () => {
             const detections = await faceapi.detectAllFaces(video).withFaceLandmarks().withFaceDescriptors()
             // console.log(detections, 'by meee')
             const resizedDetections = faceapi.resizeResults(detections, displaySize)
@@ -85,10 +87,35 @@ btn.addEventListener('click', ()=>{
                 }
             })
         },2000)
-        // if(document.getElementById("att").clicked == true){
-        //     return;
-        // } and hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+
+
+       // everything for viewing attendace is programmed here 
+        /////////////////////////////////////////////////
+        document.getElementById("att").onclick = function(){
+            console.log('yeah');
+            document.getElementById("videoInput").style.display = "none";
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            clearInterval(timeintervall);
+            canvas.style.display = "none";
+            document.getElementById("att").style.display = "none";
+// how to stop cameraaaaaaaaaaaaaaaaaaaaaaaa
+            // video.pause();
+            // video.src = "";
+            // video.getTracks()[0].stop();
+
+
+            document.getElementById("table").classList.remove("hidden");
+            // making the attendace table right here 
+            // const table = document.querySelector('#table')
+            // const tblheadingrow = document.querySelector('#headrow')
+            // const tblheading = document.querySelector('#heading')
+            // tblheadingrow.appendChild(tblheading)
+            // table.appendChild(tblheadingrow)
+            // document.body.append(table);
+        }
     }
+     
+         
 
     
     function loadLabeledImages() {
@@ -108,11 +135,7 @@ btn.addEventListener('click', ()=>{
         })
         )
     }
-    // function showthem(){
-    //     // document.getElementById("videoInput").style.display = "none";
-    //     // btn.style.display = "none";
-    //     // document.getElementsByClassName("table").style.display = "table";
-    // }
+    
    
 // why faceapi is giving error on refreshing?
-// how to stop webcam when it just detect a single face..
+// how to stop webcam when it just detect a single face..}
