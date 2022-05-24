@@ -15,20 +15,6 @@ Promise.all([
 }) /*enable the button here!!!*/
 
 
-
-// function start() {
-//     // document.body.append('Models Loaded')
-
-//     navigator.getUserMedia(
-//         { video:{} },
-//         stream => video.srcObject = stream,
-//         err => console.error(err)
-//     )
-
-//     //video.src = '../videos/speech.mp4'
-//     console.log('video added')
-//     recognizeFaces()
-// }
 btn.addEventListener('click', () => {
     navigator.getUserMedia(
         { video: {} },
@@ -92,7 +78,7 @@ async function recognizeFaces() {
                 document.getElementById("btn").style.display = "none";
             }
         })
-    }, 2000)
+    }, 1000)
 
 
     // everything for viewing attendace is programmed here 
@@ -104,6 +90,8 @@ async function recognizeFaces() {
         clearInterval(timeintervall);
         canvas.style.display = "none";
         document.getElementById("att").style.display = "none";
+        document.getElementById("afterr").classList.remove('lett');
+        document.getElementById("afterr").innerHTML = "List of Attendees"
         // how to stop cameraaaaaaaaaaaaaaaaaaaaaaaa
         // video.pause();
         // video.src = "";
@@ -120,6 +108,7 @@ async function recognizeFaces() {
         document.getElementById('body').appendChild(table);
         
         let row1 = document.createElement('tr');
+        row1.style.backgroundColor = "#EEA47FFF";
         let heading1 = document.createElement('th');
         heading1.innerHTML = "Sr. No."
         let heading2 = document.createElement('th');
@@ -132,30 +121,36 @@ async function recognizeFaces() {
         for (let i = 0; i < length ; i++) {
             
             let nextrow = document.createElement('tr');
-
+            if (i%2 == 0) {
+                nextrow.style.backgroundColor= "#00539CFF";
+                nextrow.style.color = "#EEA47FFF";
+            }
+            else{
+                nextrow.style.backgroundColor= "#EEA47FFF";
+                nextrow.style.color = "#00539CFF";
+            }
             let row_serial_no = document.createElement('td');
             row_serial_no.innerHTML = i+1;
-            row_serial_no.style.width = 10;
             let row_name = document.createElement('td');
             row_name.innerHTML = attendance[i];
             
             
             nextrow.appendChild(row_serial_no);
             nextrow.appendChild(row_name);
-            tbody.appendChild(nextrow);
+            thead.appendChild(nextrow);
 
         }
 
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                window.localStream = stream;
-                window.localStream.getVideoTracks()[0].stop(); 
+        // navigator.mediaDevices.getUserMedia({ video: true })
+        //     .then(stream => {
+        //         window.localStream = stream;
+        //         window.localStream.getVideoTracks()[0].stop(); 
 
-            })
+        //     })
 
-            .catch((err) => {
-                console.log(err);
-            });
+        //     .catch((err) => {
+        //         console.log(err);
+        //     });
         // // stop only video
         // window.x = localStream;
         // window.localStream.getVideoTracks()[0].stop(); 
