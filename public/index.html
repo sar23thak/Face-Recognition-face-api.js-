@@ -168,6 +168,18 @@
         .lett{
             display: none;
         }
+        video::-webkit-media-controls-play-button {
+            display: none;
+        } 
+        video::-webkit-media-controls-mute-button {
+            display: none;
+        } 
+        video::-webkit-media-controls-timeline {
+            display: none;
+        } 
+        video::-webkit-media-controls-current-time-display {
+            display: none;
+        } 
     </style>
 </head>
 <body id="body">
@@ -175,8 +187,7 @@
     <button id="btn" class="button" style="vertical-align:middle" disabled><span>Run Attendance Engine</span></button>
     <button id="att" class="ton" style="vertical-align:middle"><span>Track class attendance</span></button>
 
-    <video id="videoInput" width="720" height="550" muted controls autoplay>
-
+    <video id="videoInput" width="720" height="550" muted autoplay controls>
     <!-- lets make a table for attendance -->
     
     <script defer async src="./js/face-api.min.js"></script>

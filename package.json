@@ -1,14 +1,14 @@
 {
-  "name": "face-recognition-video",
+  "name": "face-recognition-Attendance-System",
   "version": "1.0.0",
-  "description": "Face Reconition from Video using face-api.js",
+  "description": "Face Reconition using face-api.js",
   "main": "app.js",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js -L -e js,html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "xarthak",
+  "author": "Sarthak Sharma",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.1"

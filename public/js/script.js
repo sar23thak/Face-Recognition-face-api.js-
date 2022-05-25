@@ -1,13 +1,13 @@
 const video = document.getElementById('videoInput')
 var attendance = new Set([]);
 var btn = document.getElementById("btn")
-
+// var faceapi = "./js/face-api.min.js";
 // tblheadrow.appendChild(tblheading)
 // tblheadrow.appendChild(tblheadingblank)
 
 
 Promise.all([
-    faceapi.nets.faceRecognitionNet.loadFromUri('/models').catch(err => console.log(err, 'print it')),
+    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
     faceapi.nets.ssdMobilenetv1.loadFromUri('/models') //heavier/accurate version of tiny face detector
 ]).then(() => {
