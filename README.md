@@ -13,4 +13,8 @@ Open terminal shell and follow the steps listed below-
 <b>Step 3:</b>Open Browser and type ```http://localhost:3000/``` to run the code in your local environment.  
   
 <b>personalizing the application.</b>  
-To customize the application to track attendace of your class, you need to store the data of students in form of thier face's images and to do so, make separate folder of each student in labeled_images folder(Inside public folder).
+To customize the application to track attendace of your class, you need to store the data of students in form of thier face's images and to do so, make separate folder of each student in labeled_images folder(Inside public folder).  
+To recognize the registered faaces, add the names of the student in the *script.js file*, line no. 145 in **array: const labels**.  
+  
+On starting the application on browser it will take a while to open camera and start recognizing faces.  
+Once all students finish marking their attendance, teacher can generate the list of attendance by clicking on the button *Track class attendance*.
