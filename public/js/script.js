@@ -1,10 +1,7 @@
 const video = document.getElementById('videoInput')
 var attendance = new Set([]);
 var btn = document.getElementById("btn")
-// var faceapi = "./js/face-api.min.js";
-// tblheadrow.appendChild(tblheading)
-// tblheadrow.appendChild(tblheadingblank)
-
+var filtered_attendees = [];
 
 Promise.all([
     faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
@@ -14,29 +11,22 @@ Promise.all([
     btn.disabled = false;
 }) /*enable the button here!!!*/
 
+document.getElementById("about").onclick = function(){
+    window.open("https://github.com/sar23thak/Face-Recognition-face-api.js-");
+    
+}
+
 
 btn.addEventListener('click', () => {
     navigator.getUserMedia(
         { video: {} },
         stream => video.srcObject = stream,
-        // const stream = video.srcObject;
         err => console.error(err)
     )
-
-
-
-
-
-    //video.src = '../videos/speech.mp4'
     console.log('video added')
     //disable the button again here!!!
     btn.disabled = true;
     recognizeFaces()
-    // canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height) it is not working here :(
-    // if(document.getElementById('att').clicked == true){
-    //     console.log("kiliked");
-    //     return;
-    // }//////////////////////////////i left here
 })
 
 async function recognizeFaces() {
@@ -51,8 +41,6 @@ async function recognizeFaces() {
     const displaySize = { width: video.width, height: video.height }
     faceapi.matchDimensions(canvas, displaySize)
 
-
-
     timeintervall = setInterval(async () => {
         const detections = await faceapi.detectAllFaces(video).withFaceLandmarks().withFaceDescriptors()
         // console.log(detections, 'by meee')
@@ -64,17 +52,15 @@ async function recognizeFaces() {
             return faceMatcher.findBestMatch(d.descriptor)
         })
         results.forEach((result, i) => {
-            // this is how you can find the name of the attendee/////////////////////////////////////////////////////////////
+            // this is how you can find the name of the attendee
             attendance.add(result.label.toString())
             console.log(attendance)
-            // console.log(result.label)
+            // console.log(result.label) printing name of student recognized
             const box = resizedDetections[i].detection.box
             const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() })
             drawBox.draw(canvas)
-            // console.log(attendance.size);//////////
             if (attendance.size.toString() != '0') {
                 document.getElementById("att").style.display = "initial";
-                // console.log("it should show");
                 document.getElementById("btn").style.display = "none";
             }
         })
@@ -82,7 +68,6 @@ async function recognizeFaces() {
 
 
     // everything for viewing attendace is programmed here 
-    /////////////////////////////////////////////////
     document.getElementById("att").onclick = function () {
         console.log('yeah');
         document.getElementById("videoInput").style.display = "none";
@@ -92,14 +77,8 @@ async function recognizeFaces() {
         document.getElementById("att").style.display = "none";
         document.getElementById("afterr").classList.remove('lett');
         document.getElementById("afterr").innerHTML = "List of Attendees"
-        // how to stop cameraaaaaaaaaaaaaaaaaaaaaaaa
-        // video.pause();
-        // video.src = "";
-        // video.getTracks()[0].stop();
 
-        // document.getElementById("table").classList.remove("hidden");
-        // making the attendace table right here table table table table table table table table table table table table table table 
-        
+        // making the attendace table right here
         let table = document.createElement('table');
         let thead = document.createElement('table');
         let tbody = document.createElement('tbody');
@@ -117,9 +96,19 @@ async function recognizeFaces() {
         row1.appendChild(heading2);
         thead.appendChild(row1);
         attendance = Array.from(attendance);
+        var x = false;
         let length = attendance.length;
-        for (let i = 0; i < length ; i++) {
-            
+        for (let j = 0; j < length; j++) {
+            if (attendance[j] == "unknown") {
+                x = true;
+                continue;
+            }
+            else{
+                filtered_attendees.push(attendance[j]);
+            }
+        }
+        let strength = filtered_attendees.length;
+        for (let i = 0; i < strength; i++) {
             let nextrow = document.createElement('tr');
             if (i%2 == 0) {
                 nextrow.style.backgroundColor= "#00539CFF";
@@ -132,38 +121,28 @@ async function recognizeFaces() {
             let row_serial_no = document.createElement('td');
             row_serial_no.innerHTML = i+1;
             let row_name = document.createElement('td');
-            row_name.innerHTML = attendance[i];
-            
+            row_name.innerHTML = filtered_attendees[i];
             
             nextrow.appendChild(row_serial_no);
             nextrow.appendChild(row_name);
             thead.appendChild(nextrow);
-
         }
-
-        // navigator.mediaDevices.getUserMedia({ video: true })
-        //     .then(stream => {
-        //         window.localStream = stream;
-        //         window.localStream.getVideoTracks()[0].stop(); 
-
-        //     })
-
-        //     .catch((err) => {
-        //         console.log(err);
-        //     });
-        // // stop only video
-        // window.x = localStream;
-        // window.localStream.getVideoTracks()[0].stop(); 
-
+        // mentioning the total strength of class 
+        let para = document.createElement('p')
+        para.innerHTML = "Total  Strength:" + strength
+        document.body.append(para);
+        if (strength == 0) {
+            alert("None of the student attended the class!");
+            
+        }
+        if (x == true) {
+            alert("Some unknown students were present in your class!")
+        }
     }
 }
 
-
-
-
 function loadLabeledImages() {
-    const labels = ['sarthak', 'Black Widow', 'Captain America', 'Hawkeye', 'Tony Stark', 'Thor', 'Captain Marvel']
-    // const labels = ['Prashant Kumar'] // for WebCam
+    const labels = ['sarthak', 'Captain America', 'Hawkeye', 'Tony Stark', 'Thor']
     return Promise.all(
         labels.map(async (label) => {
             const descriptions = []
@@ -178,9 +157,3 @@ function loadLabeledImages() {
         })
     )
 }
-
-
-// why faceapi is giving error on refreshing?
-// how to stop webcam when it just detect a single face..}
-// prmoise on youtibe
-// rounded corner 
