@@ -1,5 +1,5 @@
 # Face-Recognition-face-api.js-
-Attendance System based on face recognition from WebCam.
+Attendance System based on face recognition from WebCam.  
 Programming Languages used: HTML, CSS, Javascript.  
   
 Some Major Technologies used: Node.Js as environment and express.js for framework along with the tensorflow.js library for face detection and recognition.  
@@ -14,7 +14,7 @@ Open terminal shell and follow the steps listed below-
   
 <b>personalizing the application.</b>  
 To customize the application to track attendace of your class, you need to store the data of students in form of thier face's images and to do so, make separate folder of each student in labeled_images folder(Inside public folder).  
-To recognize the registered faaces, add the names of the student in the *script.js file*, line no. 145 in **array: const labels**.  
+To recognize the registered faaces, add the names of the student in the *script.js file*, line no. 151 in **array: const labels**.  
   
 On starting the application on browser it will take a while to open camera and start recognizing faces.  
 Once all students finish marking their attendance, teacher can generate the list of attendance by clicking on the button *Track class attendance*.
