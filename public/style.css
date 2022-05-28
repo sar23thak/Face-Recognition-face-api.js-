@@ -35,9 +35,18 @@ canvas {
     border-radius: 15px;
     background-color: #000;
 }
-
+@keyframes slideInLeft {
+    0% {
+      transform: translatey(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 button {
     margin-bottom: 20px;
+    animation: 0.5s ease-out 0s 1 slideInLeft;
+        background: #666;
 }
 
 .button {
@@ -87,6 +96,7 @@ button {
 #att {
     /* margin-bottom: 20px; */
     display: none;
+    
 }
 
 .ton {
@@ -141,6 +151,7 @@ table {
     border-radius: 6px;
     /* border-collapse: collapse; */
     align-items: center;
+    transition: 0.5s;
 }
 
 td {

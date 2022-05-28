@@ -19,13 +19,19 @@ document.getElementById("about").onclick = function(){
 }
 
 btn.addEventListener('click', () => {
-    //code execute after pressing run  attendance engine button
-    navigator.getUserMedia(
-        { video: {} },
-        stream => video.srcObject = stream,
-        err => console.error(err)
-    )
-    console.log('video added')
+    navigator.mediaDevices.getUserMedia({
+        video: true
+      })
+      .then(stream => {
+        window.localStream = stream;
+        video.srcObject = stream;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+
+
     //disable the button again here!!!
     btn.disabled = true;
     recognizeFaces()
@@ -77,6 +83,10 @@ async function recognizeFaces() {
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
         clearInterval(timeintervall);
         canvas.style.display = "none";
+        //closing the camera after use in next two lines
+        localStream.getVideoTracks()[0].stop();
+        video.src = '';
+    
         document.getElementById("att").style.display = "none";
         document.getElementById("afterr").classList.remove('lett');
         document.getElementById("afterr").innerHTML = "List of Attendees"
