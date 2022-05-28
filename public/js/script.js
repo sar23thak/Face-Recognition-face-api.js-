@@ -1,6 +1,7 @@
 const video = document.getElementById('videoInput')
 var attendance = new Set([]); //creating set to count raw attendace
 var btn = document.getElementById("btn")
+let exportt =  document.createElement('button')
 var filtered_attendees = []; //final attendance after removing "unknown" faces..
 
 Promise.all([
@@ -146,7 +147,14 @@ async function recognizeFaces() {
         // mentioning the total strength of class 
         let para = document.createElement('p')
         para.innerHTML = "Total  Strength:" + strength
-        document.body.append(para);
+        // document.body.append(para);
+        exportt.classList.add("exportt")
+        exportt.innerHTML = "export list";
+        // document.body.append(exportt);
+        let divv = document.createElement('div');
+        divv.append(para);
+        divv.append(exportt);
+        document.body.append(divv);
         if (strength == 0) {
             alert("None of the student attended the class!");
             
@@ -172,4 +180,29 @@ function loadLabeledImages() {
             return new faceapi.LabeledFaceDescriptors(label, descriptions)
         })
     )
+}
+var today = new Date();
+
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+console.log(date);
+exportt.onclick = function(){
+var excel = $JExcel.new();
+excel.set({sheet:0, value: "list-" + date});
+
+var headers = ["Sr. No.", "Name of Student"];
+// we can style headers too 
+var formatHeader=excel.addStyle ( {
+    border: "none,none,none,thin #333333",font: "Calibri 12 #000000 B"}
+); 
+
+for (let i = 0; i < headers.length; i++) {
+    excel.set(0, i, 0, headers[i], formatHeader);
+    excel.set(0, i, undefined, "auto");
+}
+for (let i = 1; i <= filtered_attendees.length; i++) {
+    excel.set(0, 0, i, i, excel.addStyle( {align:"L B"}));
+    excel.set(0, 1, i, filtered_attendees[i-1], excel.addStyle( {align:"L B"}));
+    
+}
+excel.generate("Attendance_List " + date + ".xlsx");
 }
