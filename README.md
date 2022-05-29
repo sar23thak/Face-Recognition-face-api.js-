@@ -22,4 +22,7 @@ after installing all the npm packages and registering the students, you need to 
 <b>Step 1:</b> run node src/app.js to initialize the program.  
 <b>Step 2:</b>Open Browser and type http://localhost:3000/ to run the code in your local environment.  
 When window appears on the browser click on ***run attendance engine*** button to start, note that sometimes face-api does not load by itself so in case the button don't work, please refresh the page once or twice!. once the api loaded and you hit the button, it will ask for the permission to open camera after which it will take a while to open camera and start recognizing faces.  
-Once all students finish marking their attendance, teacher can generate the list of attendance by clicking on the button *Track class attendance*.
+Once all students finish marking their attendance, teacher can generate the list of attendance by clicking on the button *Track class attendance*.  
+  
+**About the Application-**  
+The Attendance System will recognize the faces of all those students who are registered in the system already, it will detect some unknown faces as well and notify the teacher about the same, after all the students donw with marking their attendance teacher can track the attendance list on click ***track class attendance*** button, also for the future reference the teacher can generate a excel sheet of the attendance list which will automatically download on the system.
