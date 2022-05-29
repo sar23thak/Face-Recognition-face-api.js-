@@ -25,4 +25,7 @@ When window appears on the browser click on ***run attendance engine*** button t
 Once all students finish marking their attendance, teacher can generate the list of attendance by clicking on the button *Track class attendance*.  
   
 **About the Application-**  
-The Attendance System will recognize the faces of all those students who are registered in the system already, it will detect some unknown faces as well and notify the teacher about the same, after all the students donw with marking their attendance teacher can track the attendance list on click ***track class attendance*** button, also for the future reference the teacher can generate a excel sheet of the attendance list which will automatically download on the system.
+The Attendance System will recognize the faces of all those students who are registered in the system already, it will detect some unknown faces as well and notify the teacher about the same, after all the students done with marking their attendance teacher can track the attendance list by clicking on ***track class attendance*** button, also for the future reference the teacher can generate a excel sheet of the attendance list which will automatically download on the system.  
+  
+Deployed website link-  
+http://face-recognition-face-api-js.vercel.app/
