@@ -10,5 +10,5 @@ app.use(express.static(basePath))
 
 //start express server
 app.listen(port, () => {
-    console.log('Server started on post ' + port)
+    console.log('Server started on port ' + port)
 })

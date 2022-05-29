@@ -1,20 +1,19 @@
 const video = document.getElementById('videoInput')
 var attendance = new Set([]); //creating set to count raw attendace
 var btn = document.getElementById("btn")
-let exportt =  document.createElement('button')
+let exportt = document.createElement('button')
 var filtered_attendees = []; //final attendance after removing "unknown" faces..
-
 Promise.all([
     // importing faceapi.js 
-    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-    faceapi.nets.ssdMobilenetv1.loadFromUri('/models') //heavier/accurate version of tiny face detector
+    faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('./models'),
+    faceapi.nets.ssdMobilenetv1.loadFromUri('./models') //heavier/accurate version of tiny face detector
 ]).then(() => {
     btn.disabled = false;
     /*enabled the button here!!!*/
 })
 
-document.getElementById("about").onclick = function(){
+document.getElementById("about").onclick = function () {
     window.open("https://github.com/sar23thak/Face-Recognition-face-api.js-");
     //code for get help button on top right of the screen
 }
@@ -22,14 +21,14 @@ document.getElementById("about").onclick = function(){
 btn.addEventListener('click', () => {
     navigator.mediaDevices.getUserMedia({
         video: true
-      })
-      .then(stream => {
-        window.localStream = stream;
-        video.srcObject = stream;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    })
+        .then(stream => {
+            window.localStream = stream;
+            video.srcObject = stream;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 
 
 
@@ -87,7 +86,7 @@ async function recognizeFaces() {
         //closing the camera after use in next two lines
         localStream.getVideoTracks()[0].stop();
         video.src = '';
-    
+
         document.getElementById("att").style.display = "none";
         document.getElementById("afterr").classList.remove('lett');
         document.getElementById("afterr").innerHTML = "List of Attendees"
@@ -99,7 +98,7 @@ async function recognizeFaces() {
         table.appendChild(thead);
         table.appendChild(tbody);
         document.getElementById('body').appendChild(table);
-        
+
         let row1 = document.createElement('tr');
         row1.style.backgroundColor = "#EEA47FFF";
         let heading1 = document.createElement('th');
@@ -119,7 +118,7 @@ async function recognizeFaces() {
                 x = true;
                 continue;
             }
-            else{
+            else {
                 filtered_attendees.push(attendance[j]);
             }
         }
@@ -127,19 +126,19 @@ async function recognizeFaces() {
         let strength = filtered_attendees.length;
         for (let i = 0; i < strength; i++) {
             let nextrow = document.createElement('tr');
-            if (i%2 == 0) {
-                nextrow.style.backgroundColor= "#00539CFF";
+            if (i % 2 == 0) {
+                nextrow.style.backgroundColor = "#00539CFF";
                 nextrow.style.color = "#EEA47FFF";
             }
-            else{
-                nextrow.style.backgroundColor= "#EEA47FFF";
+            else {
+                nextrow.style.backgroundColor = "#EEA47FFF";
                 nextrow.style.color = "#00539CFF";
             }
             let row_serial_no = document.createElement('td');
-            row_serial_no.innerHTML = i+1;
+            row_serial_no.innerHTML = i + 1;
             let row_name = document.createElement('td');
             row_name.innerHTML = filtered_attendees[i];
-            
+
             nextrow.appendChild(row_serial_no);
             nextrow.appendChild(row_name);
             thead.appendChild(nextrow);
@@ -157,7 +156,7 @@ async function recognizeFaces() {
         document.body.append(divv);
         if (strength == 0) {
             alert("None of the student attended the class!");
-            
+
         }
         if (x == true) {
             alert("Some unknown students were present in your class!")
@@ -181,28 +180,31 @@ function loadLabeledImages() {
         })
     )
 }
-var today = new Date();
 
-var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-console.log(date);
-exportt.onclick = function(){
-var excel = $JExcel.new();
-excel.set({sheet:0, value: "list-" + date});
+// the code below is to create an excel sheet of  the attendance and to save it on local computer
+exportt.onclick = function () {
+        var today = new Date();
 
-var headers = ["Sr. No.", "Name of Student"];
-// we can style headers too 
-var formatHeader=excel.addStyle ( {
-    border: "none,none,none,thin #333333",font: "Calibri 12 #000000 B"}
-); 
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+        console.log(date);
+        var excel = $JExcel.new();
+        excel.set({ sheet: 0, value: "list-" + date });
 
-for (let i = 0; i < headers.length; i++) {
-    excel.set(0, i, 0, headers[i], formatHeader);
-    excel.set(0, i, undefined, "auto");
-}
-for (let i = 1; i <= filtered_attendees.length; i++) {
-    excel.set(0, 0, i, i, excel.addStyle( {align:"L B"}));
-    excel.set(0, 1, i, filtered_attendees[i-1], excel.addStyle( {align:"L B"}));
-    
-}
-excel.generate("Attendance_List " + date + ".xlsx");
+        var headers = ["Sr. No.", "Name of Student"];
+        // we can style headers too 
+        var formatHeader = excel.addStyle({
+            border: "none,none,none,thin #333333", font: "Calibri 12 #000000 B"
+        }
+        );
+
+        for (let i = 0; i < headers.length; i++) {
+            excel.set(0, i, 0, headers[i], formatHeader);
+            excel.set(0, i, undefined, "auto");
+        }
+        for (let i = 1; i <= filtered_attendees.length; i++) {
+            excel.set(0, 0, i, i, excel.addStyle({ align: "L B" }));
+            excel.set(0, 1, i, filtered_attendees[i - 1], excel.addStyle({ align: "L B" }));
+
+        }
+        excel.generate("Attendance_List " + date + ".xlsx");
 }
